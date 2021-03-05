@@ -12,10 +12,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -117,12 +121,12 @@ fun Counter(
             Button(
                 onClick = { increment.invoke() },
             ) {
-                Text(text = "+")
+                Icon(Icons.Filled.ExpandLess, contentDescription = "Up")
             }
         }
 
         Row(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),
             verticalAlignment = Alignment.Bottom
         ) {
             Text(
@@ -143,7 +147,7 @@ fun Counter(
             Button(
                 onClick = { decrement.invoke() },
             ) {
-                Text(text = "-")
+                Icon(Icons.Filled.ExpandMore, contentDescription = "Down")
             }
         }
     }
