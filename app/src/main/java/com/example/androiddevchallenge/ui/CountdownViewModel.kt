@@ -11,11 +11,12 @@ class CountdownViewModel : ViewModel() {
     val uiState = _uiState.asStateFlow()
 
     private val timer = MyTimer(
-        onTick = { minutes, seconds ->
+        onTick = { minutes, seconds, progress ->
             _uiState.value = _uiState.value.run {
                 copy(
                     minutes = minutes,
-                    seconds = seconds
+                    seconds = seconds,
+                    progress = progress,
                 )
             }
         },
@@ -24,7 +25,8 @@ class CountdownViewModel : ViewModel() {
                 copy(
                     timerState = TimerState.READY,
                     minutes = 0,
-                    seconds = 0
+                    seconds = 0,
+                    progress = 0f,
                 )
             }
         }
@@ -98,7 +100,8 @@ class CountdownViewModel : ViewModel() {
             copy(
                 timerState = TimerState.READY,
                 minutes = 0,
-                seconds = 0
+                seconds = 0,
+                progress = 0f,
             )
         }
     }

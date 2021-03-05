@@ -1,13 +1,32 @@
 package com.example.androiddevchallenge.ui
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,6 +50,9 @@ fun Content() {
     val uiState by viewModel.uiState.collectAsState()
 
     Box {
+
+        TimerCircle(uiState.progress)
+
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -171,5 +193,38 @@ fun TimerButtons(
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
+    }
+}
+
+@Composable
+fun TimerCircle(progress: Float) {
+    val progressColor = MaterialTheme.colors.primary
+    Canvas(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        val canvasWidth = size.width
+        val canvasHeight = size.height
+        drawCircle(
+            color = Color.LightGray,
+            center = Offset(x = canvasWidth / 2, y = canvasHeight / 2),
+            radius = size.width / 2,
+            style = Stroke(8.dp.toPx())
+        )
+
+        if (progress > 0) {
+            rotate(degrees = -90f) {
+                drawArc(
+                    color = progressColor,
+                    startAngle = 0f,
+                    sweepAngle = 360f * progress,
+                    useCenter = false,
+                    topLeft = Offset(x = 0f, y = canvasHeight / 2 - canvasWidth / 2),
+                    size = Size(canvasWidth, canvasWidth),
+                    style = Stroke(8.dp.toPx())
+                )
+            }
+        }
     }
 }

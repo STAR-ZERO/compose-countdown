@@ -4,14 +4,17 @@ import android.os.CountDownTimer
 import kotlin.math.ceil
 
 class MyTimer(
-    private val onTick: (Int, Int) -> Unit,
+    private val onTick: (Int, Int, Float) -> Unit,
     private val onFinish: () -> Unit
 ) {
     private var timer: CountDownTimer? = null
 
+    private var totalTime: Long = 0
+
     private var left: Long = 0
 
     fun start(count: Long) {
+        totalTime = count
         startTimer(count)
         timer?.start()
     }
@@ -31,12 +34,13 @@ class MyTimer(
     }
 
     private fun startTimer(count: Long) {
-        timer = object : CountDownTimer(count, 200) {
+        timer = object : CountDownTimer(count, 1) {
             override fun onTick(millisUntilFinished: Long) {
                 val tickSeconds = ceil(millisUntilFinished / 1000.0).toInt()
                 val minutes = tickSeconds / 60
                 val seconds = tickSeconds - (minutes * 60)
-                onTick.invoke(minutes, seconds)
+                val progress = millisUntilFinished.toFloat() / totalTime.toFloat()
+                onTick.invoke(minutes, seconds, progress)
                 left = millisUntilFinished
             }
 
